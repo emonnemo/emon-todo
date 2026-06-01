@@ -1,0 +1,8 @@
+@import "@emonnemo/ui/styles/globals.css";
+
+@source "./**/*.{ts,tsx}";
+@source "../node_modules/@emonnemo/ui/dist/**/*.{js,mjs}";
+
+body {
+  min-height: 100vh;
+}
