@@ -1,5 +1,6 @@
 {
   "framework": "nextjs",
+  "installCommand": "node scripts/generate-npmrc.js && npm install",
   "buildCommand": "next build",
   "outputDirectory": ".next"
 }
