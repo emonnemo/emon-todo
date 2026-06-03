@@ -59,8 +59,15 @@ const statusLabel: Record<TaskStatus, string> = {
 };
 
 export default function TodoPage() {
-  const [tasks, setTasks] = React.useState<Task[]>(loadTasks);
+  const [tasks, setTasks] = React.useState<Task[]>([]);
+  const [hydrated, setHydrated] = React.useState(false);
   const [newTask, setNewTask] = React.useState("");
+
+  React.useEffect(() => {
+    const stored = loadTasks();
+    setTasks(stored);
+    setHydrated(true);
+  }, []);
 
   React.useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
@@ -114,6 +121,12 @@ export default function TodoPage() {
   return (
     <main className="min-h-screen bg-background px-4 py-8 text-foreground sm:px-6 lg:px-8">
       <section className="mx-auto grid w-full max-w-3xl gap-8">
+        {!hydrated ? (
+          <div className="flex min-h-[50vh] items-center justify-center">
+            <Text variant="muted">Loading...</Text>
+          </div>
+        ) : (
+          <>
         <header className="grid gap-3">
           <Text variant="muted" as="p">
             @emonnemo/ui playground
@@ -170,6 +183,8 @@ export default function TodoPage() {
             </div>
           )}
         </div>
+          </>
+        )}
       </section>
     </main>
   );
