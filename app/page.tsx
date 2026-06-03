@@ -31,11 +31,26 @@ type Task = {
   status: TaskStatus;
 };
 
-const initialTasks: Task[] = [
+const STORAGE_KEY = "emon-todo:tasks";
+
+const defaultTasks: Task[] = [
   { id: "task-1", title: "Try the local UI package", status: "open" },
   { id: "task-2", title: "Publish a patch version", status: "open" },
   { id: "task-3", title: "Install it in a real app", status: "finished" },
 ];
+
+function loadTasks(): Task[] {
+  if (typeof window === "undefined") return defaultTasks;
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return defaultTasks;
+    const parsed = JSON.parse(raw);
+    if (!Array.isArray(parsed)) return defaultTasks;
+    return parsed;
+  } catch {
+    return defaultTasks;
+  }
+}
 
 const statusLabel: Record<TaskStatus, string> = {
   open: "Open",
@@ -44,8 +59,12 @@ const statusLabel: Record<TaskStatus, string> = {
 };
 
 export default function TodoPage() {
-  const [tasks, setTasks] = React.useState<Task[]>(initialTasks);
+  const [tasks, setTasks] = React.useState<Task[]>(loadTasks);
   const [newTask, setNewTask] = React.useState("");
+
+  React.useEffect(() => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
+  }, [tasks]);
 
   const totals = React.useMemo(() => {
     return tasks.reduce(
