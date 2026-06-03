@@ -9,7 +9,7 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
-    "@emonnemo/ui": "file:../emonnemo-ui",
+    "@emonnemo/ui": "^0.4.0",
     "lucide-react": "^0.469.0",
     "next": "^15.0.0",
     "react": "^19.0.0",
